@@ -1,0 +1,13 @@
+---
+title: "Package Test"
+author: "Sucheen Sundaram"
+date: "6/21/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(Frost2021Package)
+Frost2021Package::scrape_rvest("https://stackoverflow.com/questions/9689104/installing-r-on-mac-warning-messages-setting-lc-ctype-failed-using-c/17510093#17510093", "li")
+```
+

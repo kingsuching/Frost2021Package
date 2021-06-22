@@ -1,0 +1,21 @@
+Package: MetadataRepository_Summer2021
+Title: Frost Summer Internship 2021 H. Glanz
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Sucheen",
+           family = "Sundaram",
+           role = c("aut", "cre"),
+           email = "sssundar@calpoly.edu")
+Description: This is a package used for development of a metadata repository for the Cal Poly Frost Summer 2021 Research Program.
+License: What license it uses
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    rvest,
+    stringr,
+    magrittr,
+    dplyr
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Suggests: 
+    testthat
