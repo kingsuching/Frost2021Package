@@ -1,3 +1,5 @@
+#' Returns scraped data based on given URL and CSS selector
+#'
 #' @author Sucheen Sundaram
 #' Date 6/21/2021
 #' @import rvest
