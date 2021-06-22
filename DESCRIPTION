@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 Package: MetadataRepository_Summer2021
+=======
+Package: Frost2021Package
+>>>>>>> 5ab08a869e342e281921071edd66ba83d9cd277f
 Title: Frost Summer Internship 2021 H. Glanz
 Version: 0.0.0.9000
 Authors@R: 
