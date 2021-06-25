@@ -13,5 +13,6 @@ library(tidyverse)
 
 ```{r}
 Frost2021Package::scrape_harvard("https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/GPRRND")
+scrape_cdph("https://data.ca.gov/dataset/covid-19-staff-data")
 ```
 
