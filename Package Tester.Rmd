@@ -9,10 +9,9 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(Frost2021Package)
 library(tidyverse)
-Frost2021Package::scrape_datahub(url = "https://datahub.io/core/airport-codes")
 ```
 
 ```{r}
-
+Frost2021Package::scrape_harvard("https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/GPRRND")
 ```
 

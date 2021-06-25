@@ -5,6 +5,7 @@
 #' @import dplyr
 #' @param url the website url
 #' @return dataframe with metadata attributes
+#' @export
 
 scrape_harvard <- function(url) {
   name <- scrape_rvest(url, "#title")
