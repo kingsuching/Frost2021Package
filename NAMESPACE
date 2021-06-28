@@ -2,6 +2,7 @@
 
 export(build_dataframe)
 export(scrape_cdph)
+export(scrape_datagov)
 export(scrape_datahub)
 export(scrape_dryad)
 export(scrape_harvard)
