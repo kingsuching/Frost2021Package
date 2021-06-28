@@ -9,10 +9,17 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(Frost2021Package)
 library(tidyverse)
+library(readr)
+library(rvest)
 ```
 
 ```{r}
-Frost2021Package::scrape_harvard("https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/GPRRND")
-scrape_cdph("https://data.ca.gov/dataset/covid-19-staff-data")
+#scrape_dryad("https://datadryad.org/stash/dataset/doi:10.6078/D14Q14")
+url <- "https://data.ca.gov/dataset?q=data&page=28"
+pg <- read_html(url)
+links <- html_attr(html_nodes(pg, "a"), "href")
+links <- data.frame(links) %>%
+  filter(str_detect(links, "/dataset/")) %>%
+  distinct()
+links
 ```
-

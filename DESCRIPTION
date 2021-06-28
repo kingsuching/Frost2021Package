@@ -14,7 +14,8 @@ Imports:
     rvest,
     stringr,
     magrittr,
-    dplyr
+    dplyr,
+    readr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests: 
