@@ -18,6 +18,28 @@ scrape_datagov <- function(url) {
   df <- data.frame(matrix(ncol = length(cols), nrow = 0))
   df <- rbind(df, data)
   names(df) <- cols
-  df <- mutate(df, Name = scrape_rvest(url, ".prose h1"), Tags = scrape_rvest(url, ".well"))
+  social <- scrape_rvest(url, ".social a")
+  string <- ""
+  for(i in social) {
+    string <- paste(string, i, sep = " ")
+  }
+  string <- str_trim(string)
+  df$`Share on Social Sites` <- string
+  publisher <- scrape_rvest(url, "tr:nth-child(4) span")
+  publisher <- publisher[publisher != ""]
+  df$Publisher <- publisher
+  df$Contact <- scrape_rvest(url, ".contact a")
+  topics <- scrape_rvest(url, ".topics a")
+  topics <- topics %>% data.frame() %>% distinct()
+  topics <- topics$.
+  topics <- paste(topics, collapse = ", ")
+  df$Topics <- topics
+  df$`Terms of Use` <- scrape_rvest(url, ".terms a")[1]
+  access <- scrape_rvest(url, "#access-use strong , .access-public a")
+  access <- data.frame(access) %>% distinct()
+  access <- access$access
+  access <- str_remove_all(access, ":")
+  access <- paste(access, collapse = ", ")
+  df$`Access & Use Information` <- access
   return(df)
 }
