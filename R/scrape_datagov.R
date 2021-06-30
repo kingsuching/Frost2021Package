@@ -43,4 +43,3 @@ scrape_datagov <- function(url) {
   df$`Access & Use Information` <- access
   return(df)
 }
-
