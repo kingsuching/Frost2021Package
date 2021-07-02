@@ -47,5 +47,20 @@ scrape_dryad <- function(url) {
   }else{
     df$Authors <- c(NA)
   }
-  return(df[, c("Citation", "Abstract", "Methods", "Data Files", "Authors")])
+  date <- scrape_rvest(url, ".c-file-group__summary")
+  if(identical(date, character(0))) {
+    date <- scrape_rvest(url, ".o-metadata__group2-item:nth-child(1)")
+    date <- str_split(date, ": ") %>% pluck(1)
+    date <- date[2]
+  }
+  if(!identical(date, character(0))) {
+    if(length(date) == 1) {
+      df$Date <- date
+    }else{
+      df$Date <- date[1]
+    }
+  }else{
+    df$Date <- c(NA)
+  }
+  return(df[, c("Citation", "Abstract", "Methods", "Data Files", "Authors", "Date")])
 }
