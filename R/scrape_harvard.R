@@ -9,8 +9,9 @@
 
 scrape_harvard <- function(url) {
   name <- scrape_rvest(url, "#title")
-  cols <- scrape_rvest(url, "th , #metrics-heading")
+  cols <- scrape_rvest(url, "#metrics-heading , th")
   data <- scrape_rvest(url, ".metrics-count-block , td")
+  data <- data[data != "" & !str_detect(data, "dataDictionary")]
   df <- data.frame(matrix(ncol = length(cols), nrow = 0))
   df <- rbind(df, data)
   df$Citation <- scrape_rvest(url, ".citation-select")
@@ -30,7 +31,7 @@ scrape_harvard <- function(url) {
   observations <- scrape_rvest(url, ".unf-block span:nth-child(2)")
   if(!identical(downloads, character(0))) {
     while(length(downloads) != nrow(file_info)) {
-      downloads <- append(downloads, 0)
+      downloads <- append(downloads, NA)
     }
     file_info$Downloads <- parse_number(downloads)
   }else{
@@ -38,7 +39,7 @@ scrape_harvard <- function(url) {
   }
   if(!identical(variables, character(0))) {
     while(length(variables) != nrow(file_info)) {
-      variables <- append(variables, 0)
+      variables <- append(variables, NA)
     }
     file_info$Variables <- parse_number(variables)
   }else{
@@ -46,7 +47,7 @@ scrape_harvard <- function(url) {
   }
   if(!identical(observations, character(0))) {
     while(length(observations) != nrow(file_info)) {
-      observations <- append(observations, 0)
+      observations <- append(observations, NA)
     }
     file_info$Observations <- parse_number(observations)
   }else{
@@ -54,5 +55,8 @@ scrape_harvard <- function(url) {
   }
   file_info <- nest(file_info, data = everything())
   df$`File Data` <- file_info
+  df$Author <- scrape_rvest(url, "#metadata_author td")
+  df$Name <- name
+  df <- df[, c("Name", "Description", "Subject", "Keyword", "File Data", "Deposit Date", "Author", "Depositor", "Dataset")]
   return(df)
 }
