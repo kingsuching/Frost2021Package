@@ -1,4 +1,4 @@
-#' This function scrapes metadata attributes from the Harvard Dataverse metadata repository.
+#' This function scrapes metadata attributes from the Zenodo data repository.
 #' @import rvest
 #' @import stringr
 #' @import magrittr
@@ -15,19 +15,7 @@ scrape_zenodo <- function(url) {
   df <- data.frame(matrix(ncol = length(cols), nrow = 0))
   df <- rbind(df, data)
   keyword <- scrape_rvest(url, "dd:nth-child(6)")
-  if(!identical(keyword, character(0))) {
-    keyword <- paste(keyword, collapse = ", ")
-    df$`Keyword(s):` <- keyword
-  }else{
-    df$`Keyword(s):` <- c(NA)
-  }
   communities <- scrape_rvest(url, "dd:nth-child(13) li")
-  if(!identical(communities, character(0))) {
-    communities <- paste(communities, collapse = ", ")
-    df$`Communities:` <- communities
-  }else{
-    df$`Communities:` <- c(NA)
-  }
   file_info <- data.frame(Name = scrape_rvest(url, ".filename"), SizeMB = scrape_rvest(url, ".nowrap:nth-child(2)"))
   numbers <- parse_number(file_info$SizeMB)
   count <- 1
@@ -40,7 +28,37 @@ scrape_zenodo <- function(url) {
   }
   file_info$SizeMB <- numbers
   file_info <- file_info %>% nest(data = everything())
-  df$`File Info` <- file_info
-  names(df) <- cols
-  return(df)
+  df <- mutate(df, FileInfo = file_info)
+  data <- append(data, file_info)
+  cols <- append(cols, "File Info")
+  names(df) <- cols[1:length(data)]
+  if(!identical(keyword, character(0)) & !str_detect(keyword, "Supplement")) {
+    df$`Keyword(s):` <- keyword %>% str_trim()
+  }else{
+    df$`Keyword(s):` <- c(NA)
+  }
+  if(!identical(communities, character(0))) {
+    df$`Communities:` <- paste(communities, collapse = ", ")
+  }else{
+    df$`Communities:` <- c(NA)
+  }
+  license <- paste(scrape_rvest(url, "dd:nth-child(15) a"), collapse = ", ")
+  if(!identical(license, character(0))) {
+    df$`License (for files):` <- license
+  }else{
+    df$`License (for files):` <- c(NA)
+  }
+  citation <- scrape_rvest(url, ".ng-binding")
+  if(!identical(citation, character(0))) {
+    df$`Cite as` <- scrape_rvest(url, ".ng-binding")
+  }else{
+    citation <- scrape_rvest(url, "#invenio-csl p")
+    if(!identical(citation, character(0))) {
+      df$`Cite as` <- citation
+    }else{
+      df$`Cite as` <- c(NA)
+    }
+  }
+  df <- mutate(df, FileInfo <- file_info)
+  return(df[, c("Name", "Authors", "Unique views", "Unique downloads", "Publication date:", "Keyword(s):", "data", "Communities:")])
 }
