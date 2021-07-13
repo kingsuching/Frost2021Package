@@ -60,5 +60,8 @@ scrape_zenodo <- function(url) {
     }
   }
   df <- mutate(df, FileInfo <- file_info)
-  return(df[, c("Name", "Authors", "Unique views", "Unique downloads", "Publication date:", "Keyword(s):", "data", "Communities:")])
+  file_info <- unnest(file_info, cols = c(data))
+  df <- mutate(df, FileName = paste(file_info$Name, collapse = ", "), SizeMB = paste(file_info$SizeMB, collapse = ", "))
+  df <- df[, c("Name", "Authors", "Unique views", "Unique downloads", "Publication date:", "Keyword(s):", "Communities:", "FileName", "SizeMB")]
+  return(df)
 }
