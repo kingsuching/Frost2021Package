@@ -37,7 +37,7 @@ scrape_dryad <- function(url) {
   df$`Data Files` <- file_info
   methods <- scrape_rvest(url, ".t-landing__text-wall:nth-child(8) p:nth-child(1)")
   if(!identical(methods, character(0))) {
-    df$Methods <- methods
+    df$Methods <- paste(methods, collapse = ", ")
   }else{
     df$Methods <- c(NA)
   }
@@ -62,5 +62,17 @@ scrape_dryad <- function(url) {
   }else{
     df$Date <- c(NA)
   }
-  return(df[, c("Citation", "Abstract", "Methods", "Data Files", "Authors", "Date")])
+  affiliation <- scrape_rvest(url, ".o-metadata__affiliation")
+  if(!identical(affiliation, character(0))) {
+    df$AuthorAffiliation <- paste(affiliation, collapse = ", ")
+  }else{
+    df$AuthorAffiliation <- c(NA)
+  }
+  target <- c("Citation", "Abstract", "Methods", "Data Files", "Authors", "AuthorAffiliation", "Date")
+  for(i in target) {
+    if(!(i %in% names(df))) {
+      df[i] <- c(NA)
+    }
+  }
+  return(df[, names(df) %in% target])
 }
