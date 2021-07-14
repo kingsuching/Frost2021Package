@@ -14,17 +14,17 @@ scrape_harvard <- function(url) {
   data <- data[data != "" & !str_detect(data, "dataDictionary")]
   df <- data.frame(matrix(ncol = length(cols), nrow = 0))
   df <- rbind(df, data)
-  df$Citation <- scrape_rvest(url, ".citation-select")
-  names(df) <- cols
-  names(df)[6] <- "function"
-  names(df)[5] <- "File Data"
+  names(df) <- cols[1:ncol(df)]
   file_info_cols <- c("Name", "Downloads", "Variables", "Observations")
   file_info_names <- scrape_rvest(url, ".fileNameOriginal a")
   file_info_names <- file_info_names[file_info_names != ""]
-  file_info <- data.frame(matrix(ncol = length(file_info_cols), nrow = length(file_info_names)))
+  file_info <- data.frame(matrix(ncol = length(file_info_cols), nrow = length(file_info_names)+1))
   names(file_info) <- file_info_cols
-  file_info <- cbind(file_info, file_info_names)
-  file_info$Name <- file_info$file_info_names
+  #file_info <- cbind(file_info, file_info_names)
+  file_info$`FileName` <- checkNull(scrape_rvest(url, "#datasetForm\\:tabView\\:filesTable\\:0\\:fileInfoInclude-filesTable a"))
+  fn <- data.frame(file_info$FileName) %>% distinct()
+  fn <- fn$file_info.FileName
+  file_info$FileName <- fn
   file_info <- file_info[, names(file_info) != "file_info_names"]
   downloads <- scrape_rvest(url, ".visible-lg-inline")
   variables <- scrape_rvest(url, ".unf-block span:nth-child(1)")
@@ -53,10 +53,18 @@ scrape_harvard <- function(url) {
   }else{
     file_info$Observations <- NA
   }
-  file_info <- nest(file_info, data = everything())
-  df$`File Data` <- file_info
-  df$Author <- scrape_rvest(url, "#metadata_author td")
-  df$Name <- name
-  df <- df[, c("Name", "Description", "Subject", "Keyword", "File Data", "Deposit Date", "Author", "Depositor", "Dataset")]
-  return(df)
+  for(i in names(file_info)) {
+    df[i] <- paste(c(file_info[i]), collapse = "; ")
+  }
+  df$Author <- checkNull(scrape_rvest(url, "#metadata_author td"))
+  df$Name <- checkNull(name)
+  df$`Deposit Date` <- checkNull(scrape_rvest(url, "#metadata_dateOfDeposit td"))
+  df$Citation <- checkNull(scrape_rvest(url, ".citation-select"))
+  target <- c("Name", "Description", "Subject", "Keyword", "Deposit Date", "Author", "Depositor", "Citation", "FileName", "Downloads", "Variables", "Observations")
+  for(i in target) {
+    if(!(i %in% names(df))) {
+      df[i] <- c(NA)
+    }
+  }
+  return(df[target])
 }
