@@ -15,5 +15,5 @@ target <- function(df, target_cols) {
       df[i] <- NA
     }
   }
-  return(df)
+  return(df[target_cols])
 }
