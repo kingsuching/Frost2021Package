@@ -15,7 +15,9 @@ Imports:
     stringr,
     magrittr,
     dplyr,
-    readr
+    readr,
+    devtools,
+    roxygen2
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests: 
