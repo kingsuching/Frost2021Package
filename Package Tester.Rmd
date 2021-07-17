@@ -23,4 +23,6 @@ links <- data.frame(links) %>%
   distinct()
 links
 print("")
+
+Frost2021Package::update_load()
 ```
