@@ -2,6 +2,7 @@
 
 export(build_dataframe)
 export(checkNull)
+export(links)
 export(predictors)
 export(scrape_cdph)
 export(scrape_datagov)
