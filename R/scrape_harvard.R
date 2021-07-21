@@ -61,6 +61,7 @@ scrape_harvard <- function(url) {
   df$`Deposit Date` <- checkNull(scrape_rvest(url, "#metadata_dateOfDeposit td"))
   df$Citation <- checkNull(scrape_rvest(url, ".citation-select"))
   target <- c("Name", "Description", "Subject", "Keyword", "Deposit Date", "Author", "Depositor", "Citation", "FileName", "Downloads", "Variables", "Observations")
+  df$Depositor <- checkNull(scrape_rvest(url, "#metadata_depositor td"))
   for(i in target) {
     if(!(i %in% names(df))) {
       df[i] <- c(NA)

@@ -4,5 +4,5 @@
 #' @export
 
 copy <- function(filename, path = "/Users/sucheen/Documents/Cal Poly SLO/Academics/Summer 2021/Frost2021Package/R/") {
-  file.copy(filename, to = path)
+  file.copy(filename, to = path, overwrite = TRUE)
 }
