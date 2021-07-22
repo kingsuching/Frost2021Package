@@ -21,6 +21,6 @@ links <- html_attr(html_nodes(pg, "a"), "href")
 links <- data.frame(links) %>%
   filter(str_detect(links, "/dataset/")) %>%
   distinct()
-links
-print("")
+
+scrape_harvard("https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/6IRAEM")
 ```
