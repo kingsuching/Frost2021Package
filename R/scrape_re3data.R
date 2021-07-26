@@ -1,7 +1,6 @@
 #' This function does some more scraping.
 #' @import dplyr
 #' @import magrittr
-#' @import Frost2021Package
 #' @import stringr
 #' @import rvest
 #' @import DT
