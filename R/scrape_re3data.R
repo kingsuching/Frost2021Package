@@ -1,6 +1,7 @@
 #' This function does some more scraping.
 #' @import dplyr
 #' @import magrittr
+#' @import Frost2021Package
 #' @import stringr
 #' @import rvest
 #' @import DT
@@ -16,7 +17,8 @@ scrape_re3data <- function(url) {
   inst_cols <- inst_cols[inst_cols != "Type(s) of responsibility"]
   inst_data <- scrape_rvest(url, ".content-block:nth-child(1) .col-sm-12:nth-child(11) .col-sm-9 , .content-block:nth-child(1) .country , .content-block:nth-child(1) .col-sm-12:nth-child(1) .col-sm-9")
   df$Responsibility <- paste(checkNull(scrape_rvest(url, ".content-block:nth-child(1) .col-sm-12:nth-child(9) li")), collapse = ", ")
+  df$Date <- checkNull(paste(scrape_rvest(url, ".content-block .col-sm-12:nth-child(5) .col-sm-9"), sep = "")[6])
   df <- c(df, inst_data)
   df <- df %>% data.frame()
-  return(df[,1:10])
+  return(df[c("Name.of.repository", "Repository.URL", "Subject.s.", "Description", "Contact", "Content.type.s.", "Keyword.s.", "Repository.type.s.", "Responsibility", "Date")])
 }
