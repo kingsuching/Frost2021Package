@@ -18,7 +18,7 @@ scrape_re3data <- function(url) {
   inst_data <- scrape_rvest(url, ".content-block:nth-child(1) .col-sm-12:nth-child(11) .col-sm-9 , .content-block:nth-child(1) .country , .content-block:nth-child(1) .col-sm-12:nth-child(1) .col-sm-9")
   df$Responsibility <- paste(checkNull(scrape_rvest(url, ".content-block:nth-child(1) .col-sm-12:nth-child(9) li")), collapse = ", ")
   df$Date <- checkNull(scrape_rvest(url, ".col-sm-12 .content-block .col-sm-12:nth-child(5) .col-sm-9"))
-  if(is.na(df$Name.of.repository)) {
+  if(is.na(df$`Name of repository`)) {
     df$Name.of.repository <- checkNull(scrape_rvest(url, "h1"))
   }
   df <- c(df, inst_data)
