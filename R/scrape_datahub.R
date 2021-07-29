@@ -23,6 +23,8 @@ scrape_datahub <- function(url) {
     rowid_to_column() %>%
     filter(rowid > 1)
   data <- data[,2:length(names(data))]
-  df$Name <- scrape_rvest(url, "h1")
+  name <- paste(scrape_rvest(url, "h1"), collapse = " ")
+  name <- str_remove_all(name, "Certified")
+  df$Name <- name
   return(target(df, c("Name", names(df))))
 }
