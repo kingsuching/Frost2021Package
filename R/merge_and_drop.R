@@ -21,3 +21,4 @@ merge_and_drop <- function(df, col1, col2) {
   }
   return(df)
 }
+
