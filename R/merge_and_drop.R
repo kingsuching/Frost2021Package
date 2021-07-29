@@ -11,6 +11,17 @@
 #' @export
 
 merge_and_drop <- function(df, col1, col2) {
+  # Handle if one column does not exist
+  tryCatch(expr = {
+    df[col1]
+  }, error = function(error) {
+    stop("[col1] does not exist.")
+  })
+  tryCatch(expr = {
+    df[col2]
+  }, error = function(error) {
+    stop("[col2] does not exist.")
+  })
   for(i in 1:nrow(df)) {
     if(!is.na(df[i, col2]) & is.na(df[i, col1])) {
       df[i, col1] <- df[i, col2]
