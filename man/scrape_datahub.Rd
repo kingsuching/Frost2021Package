@@ -6,6 +6,12 @@
 \usage{
 scrape_datahub(url)
 }
+\arguments{
+\item{url, }{the website url (must be linked to datahub.io)}
+}
+\value{
+dataframe of metadata attributes
+}
 \description{
 Extracts metadata attributes from Datahub.io
 }
