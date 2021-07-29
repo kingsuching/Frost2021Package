@@ -39,5 +39,5 @@ scrape_datashare <- function(url) {
   df$sizeMB <- paste(parse_number(filesize), collapse = "; ")
   df$Author <- checkNull(scrape_rvest(url, ".simple-item-view-creators")) %>%
     str_remove_all("Creator")
-  return(target(df, c("Name", "Author", "Date Available", "Description", "Top Country", "Citation", "Views", "filename", "filesize", "Type")))
+  return(target(df, c("Name", "Author", "Date Available", "Description", "Top Country", "Citation", "Views", "filename", "sizeMB", "Type")))
 }
