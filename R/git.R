@@ -4,5 +4,5 @@
 #' @export
 
 git <- function(repository = "Frost2021Package", message = "Working on it") {
-  system(paste("cd ..; cd ", repository, "; git commit -a -m ", message, "; git push", sep = ""))
+  system(paste("cd ..; cd ", repository, "; git commit -am \"", message, "\"", "; git push", sep = ""))
 }
