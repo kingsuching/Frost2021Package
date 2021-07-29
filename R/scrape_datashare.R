@@ -26,7 +26,7 @@ scrape_datashare <- function(url) {
   files <- files[files != "" & !is.na(files)]
   filename <- str_extract(files, "[:print:]+[(]{1}")
   filename <- str_remove_all(filename, "[ (]")
-  filesize <- str_extract(files, "[(][:print:]+[)]")
+  filesize <- str_extract(files, "[(][:alnum:]+[.]{1}[:alnum:]+[:alpha:]+[)]")
   df$filename <- paste(filename, collapse = "; ")
   numbers <- parse_number(filesize)
   count <- 1
