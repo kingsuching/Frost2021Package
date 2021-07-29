@@ -1,6 +1,8 @@
 #' Extracts metadata attributes from Datahub.io
 #' @import rvest
 #' @import magrittr
+#' @param url, the website url (must be linked to datahub.io)
+#' @return dataframe of metadata attributes
 #' @export
 
 scrape_datahub <- function(url) {
@@ -16,8 +18,11 @@ scrape_datahub <- function(url) {
     html_text()
   data <- data %>%
     str_remove_all("\n")
-  rbind(df, columns) %>%
+  data <- rbind(df, columns) %>%
     rbind(data) %>%
     rowid_to_column() %>%
     filter(rowid > 1)
+  data <- data[,2:length(names(data))]
+  df$Name <- scrape_rvest(url, "h1")
+  return(target(df, c("Name", names(df))))
 }
