@@ -17,7 +17,7 @@ scrape_dryad <- function(url) {
   if(!identical(file_info_data, character(0))) {
     file_info <- data.frame(filename = file_info_columns, sizeMB = file_info_data)
   }else{
-    file_info <- c(NA)
+    file_info <- NA
   }
   if(!is.na(file_info)) {
     numbers <- parse_number(file_info$sizeMB)
@@ -31,10 +31,10 @@ scrape_dryad <- function(url) {
       count <- count+1
     }
     file_info$sizeMB <- numbers
-    file_info <- nest(file_info, data = everything())
+    df$sizeMB <- paste(file_info$sizeMB, collapse = "; ")
+    df$filename <- paste(file_info$filename, collapse = "; ")
   }
   names(df) <- cols[1:length(data)]
-  df$`Data Files` <- file_info
   methods <- scrape_rvest(url, ".t-landing__text-wall:nth-child(8) p:nth-child(1)")
   if(!identical(methods, character(0))) {
     df$Methods <- paste(methods, collapse = ", ")
@@ -68,11 +68,22 @@ scrape_dryad <- function(url) {
   }else{
     df$AuthorAffiliation <- c(NA)
   }
-  target <- c("Citation", "Abstract", "Methods", "Data Files", "Authors", "AuthorAffiliation", "Date")
-  for(i in target) {
-    if(!(i %in% names(df))) {
-      df[i] <- c(NA)
-    }
+  df$Name <- scrape_rvest(url, ".o-heading__level1") %>% checkNull()
+  df <- df[!is.na(names(df))]
+  if(!is.na(file_info)) {
+    df$sizeMB <- paste(file_info$sizeMB, collapse = "; ")
+    df$filename <- paste(file_info$filename, collapse = "; ")
   }
-  return(df[, names(df) %in% target])
+  df$Abstract <- checkNull(scrape_rvest(url, ".t-landing__text-wall"))[1]
+  targets <- c("Name", "Citation", "Abstract", "Methods", "filename", "sizeMB", "Authors", "AuthorAffiliation", "Date", "Publication Date")
+  doi <- str_split(url, "doi:") %>% pluck(1)
+  doi <- doi[2]
+  tryCatch(expr = {
+    doi_df <- dryad_dataset(doi) %>%
+      data.frame()
+    df$`Publication Date` <- doi_df$`X10.5061.dryad.tqjq2bvxm.publicationDate`
+  }, error = function(error) {
+    df$`Publication Date` <- c(NA)
+  })
+  return(target(df, targets))
 }
