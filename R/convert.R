@@ -16,7 +16,7 @@ convert <- function(x) {
     num <- num*1000
   }else if(str_detect(x, "KB")) {
     num <- num/1000
-  }else if(str_detect(x, "[B]{1}[:print:]{0}")) {
+  }else if(str_detect(x, "[ ]{1}[B]{1}[:print:]{0}")) {
     num <- num/(10^6)
   }
   return(num)
