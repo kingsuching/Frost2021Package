@@ -8,8 +8,10 @@
 #' @export predictors
 
 predictors <- function(df, response) {
-  df <- df %>%
-    select_if(is.numeric)
+  df <- df %>% select_if(is.numeric)
+  old <- response
+  response <- str_replace_all(response, " ", ".")
+  names(df)[names(df) == old] == response
   final <- c()
   names(df) <- make.names(names(df))
   for(i in names(df)) {
