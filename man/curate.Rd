@@ -4,7 +4,7 @@
 \alias{curate}
 \title{This function does the metadata curation. It adds new data to the current metadata dataframe.}
 \usage{
-curate(repository, n = 30)
+curate(repository, n = 30, write = FALSE)
 }
 \arguments{
 \item{repository, }{the metadata repository}
