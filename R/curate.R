@@ -186,7 +186,7 @@ curate <- function(repository, n = 30, write = FALSE) {
   }
   mdf <- read.csv("./Data/mdf.csv")
   binded <- rbind(mdf, target(full_df, names(mdf)))
-  binded <- distinct(binded, Name, .keep_all = TRUE)
+  binded <- unique(binded, "Name")
   if(write) {
     write.csv(binded, "./Data/mdf.csv")
     git(repository = "MetadataRepository_Summer2021", message = paste("mdf.csv updated", now() %>% as.character(), "PT"))
