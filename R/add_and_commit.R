@@ -5,7 +5,11 @@
 #' @export
 
 add_and_commit <- function(files, repository = "Frost2021Package", message = "Working on it", commit = TRUE) {
-  system(paste("cd ..; cd", repository))
+  if(repository == "Frost2021Package") {
+    system(paste("cd ..; cd", repository, "; cd R"))
+  }else{
+    system(paste("cd ..; cd", repository))
+  }
   for(i in files) {
     system(paste("git add", i))
   }
