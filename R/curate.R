@@ -4,11 +4,12 @@
 #' @import magrittr
 #' @import stringr
 #' @import purrr
+#' @import lubridate
 #' @param repository, the metadata repository
 #' @param n, number of datasets to select
 #' @export
 
-curate <- function(repository, n = 30) {
+curate <- function(repository, n = 30, write = FALSE) {
   if(repository == "cdph") {
     full_df <- data.frame(matrix(ncol = 12, nrow = 0))
     seq <- 1:119
@@ -185,5 +186,10 @@ curate <- function(repository, n = 30) {
   }
   mdf <- read.csv("./Data/mdf.csv")
   binded <- rbind(mdf, target(full_df, names(mdf)))
+  binded <- distinct(binded, Name, .keep_all = TRUE)
+  if(write) {
+    write.csv(binded, "./Data/mdf.csv")
+    git(repository = "MetadataRepository_Summer2021", message = paste("mdf.csv updated", now() %>% as.character(), "PT"))
+  }
   return(binded)
 }
