@@ -7,9 +7,11 @@
 #' @import lubridate
 #' @param repository, the metadata repository
 #' @param n, number of datasets to select
+#' @param write, write to csv and push to GitHub
+#' @param path, path of the mdf file
 #' @export
 
-curate <- function(repository, n = 30, write = FALSE) {
+curate <- function(repository, n = 30, write = FALSE, path = "./Data/mdf.csv") {
   if(repository == "cdph") {
     full_df <- data.frame(matrix(ncol = 12, nrow = 0))
     seq <- 1:119
@@ -184,11 +186,11 @@ curate <- function(repository, n = 30, write = FALSE) {
       }
     }
   }
-  mdf <- read.csv("./Data/mdf.csv")
+  mdf <- read.csv(path)
   binded <- rbind(mdf, target(full_df, names(mdf)))
   binded <- unique_na(binded, "Name")
   if(write) {
-    write.csv(binded, "./Data/mdf.csv")
+    write.csv(binded, path)
     git(repository = "MetadataRepository_Summer2021", message = paste("mdf.csv updated", now() %>% as.character(), "PT"))
   }
   return(binded)
