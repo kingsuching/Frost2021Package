@@ -4,12 +4,16 @@
 \alias{curate}
 \title{This function does the metadata curation. It adds new data to the current metadata dataframe.}
 \usage{
-curate(repository, n = 30, write = FALSE)
+curate(repository, n = 30, write = FALSE, path = "./Data/mdf.csv")
 }
 \arguments{
 \item{repository, }{the metadata repository}
 
 \item{n, }{number of datasets to select}
+
+\item{write, }{write to csv and push to GitHub}
+
+\item{path, }{path of the mdf file}
 }
 \description{
 This function does the metadata curation. It adds new data to the current metadata dataframe.
