@@ -7,6 +7,6 @@
 
 add_to_package <- function(file) {
   Frost2021Package::copy(file)
-  system(paste("cd ..; cd Frost2021Package; git add", file))
+  system("cd ..; cd Frost2021Package; git add .")
   Frost2021Package::git(message = paste("Added", file))
 }
