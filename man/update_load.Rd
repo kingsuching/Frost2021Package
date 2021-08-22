@@ -4,7 +4,7 @@
 \alias{update_load}
 \title{This function updates the namespace for loading into other rproj files.}
 \usage{
-update_load(package = "Frost2021Package")
+update_load(package = "Frost2021Package", install = FALSE)
 }
 \description{
 This function updates the namespace for loading into other rproj files.
