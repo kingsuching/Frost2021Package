@@ -72,10 +72,16 @@ curate <- function(repository, n = 30, write = FALSE, path = "./Data/mdf.csv") {
     full_df <- data.frame(matrix(ncol = 8, nrow = 0))
     name <- c()
     for(i in link) {
+      print(i)
+      print(nrow(full_df))
       if(nrow(full_df) == n) {
         break
       }
-      name <- append(name, checkNull(scrape_rvest(i, "h1") %>% paste(collapse = " ") %>% str_remove_all(" Certified")))
+      scraped <- scrape_datahub(i)
+      if(nrow(scraped) != 0) {
+        full_df <- rbind(full_df, scraped)
+      }
+      cat("\014")
     }
   }else if(repository == "datashare") {
     full_df <- data.frame(matrix(ncol = 11, nrow = 0))
