@@ -15,12 +15,12 @@ merge_and_drop <- function(df, col1, col2) {
   tryCatch(expr = {
     df[col1]
   }, error = function(error) {
-    stop("[col1] does not exist.")
+    return(df)
   })
   tryCatch(expr = {
     df[col2]
   }, error = function(error) {
-    stop("[col2] does not exist.")
+    return(df)
   })
   for(i in 1:nrow(df)) {
     if(!is.na(df[i, col2]) & is.na(df[i, col1])) {
