@@ -59,10 +59,11 @@ scrape_zenodo <- function(url) {
       df$`Cite as` <- c(NA)
     }
   }
-  file_info <- unnest(file_info)
+  file_info <- unnest(file_info, cols = c(data))
   #df <- dplyr::mutate(df, FileName = paste(file_info$Name, collapse = ", "), SizeMB = paste(file_info$SizeMB, collapse = ", "))
   df$FileName <- paste(file_info$Name, collapse = ", ")
   df$SizeMB <- paste(file_info$SizeMB, collapse = ", ")
+  df$`Communities:` <- scrape_rvest(url, "dd:nth-child(15) a") %>%paste(collapse = ", ") %>% checkNull()
   df <- df[, c("Name", "Authors", "Unique views", "Unique downloads", "Publication date:", "Keyword(s):", "Communities:", "FileName", "SizeMB")]
   return(df)
 }
