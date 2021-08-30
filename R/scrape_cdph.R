@@ -15,5 +15,7 @@ scrape_cdph <- function(url) {
   names(df) <- cols
   social <- scrape_rvest(url, ".nav-item a")
   df$Social <- paste(social, collapse = ", ")
+  df$Name <- scrape_rvest(url, ".main-responsive-panel h1") %>% checkNull()
+  df <- df[, c("Name", "Tags", "Public Access Level", "Rights", "Program Contact Name", "Program Contact Email", "Frequency", "Last Updated", "Created", "Followers", "Organization", "Social")]
   return(df)
 }
