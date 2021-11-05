@@ -21,7 +21,7 @@ predictors <- function(df, response) {
       final <- append(final, m[1])
     }
   }
-  max_index <- index(final, max(final))
+  max_index <- bestpredictor::index(final, max(final))
   value <- names(df)[max_index]
   return(c(value, max(final)))
 }
